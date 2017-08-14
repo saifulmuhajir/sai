@@ -1,0 +1,3 @@
+[submodule "themes/casp"]
+	path = themes/casp
+	url = https://github.com/saifulmuhajir/hugo-theme-casper

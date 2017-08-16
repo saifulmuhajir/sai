@@ -1,0 +1,515 @@
+
+
+
+  
+
+
+
+
+
+  
+
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Hugo 0.25.1">
+    <meta name="theme" content="Tranquilpeak 0.3.1-BETA">
+    <title>Nakatrip</title>
+    <meta name="author" content="saifulmuhajir">
+    <meta name="keywords" content=", postgres, postgresql, saiful, saifulmuhajir, technology, indonesia, database administrator">
+
+    <link rel="icon" href="https://saiful.tech/images/favicon.ico">
+    
+      <link rel="alternate" type="application/rss+xml" title="RSS" href="https://saiful.tech/tags/nakatrip/index.xml">
+    
+
+    
+    <meta name="description" content="another viewpoint">
+    <meta property="og:description" content="another viewpoint">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="Nakatrip">
+    <meta property="og:url" content="/tags/nakatrip/">
+    <meta property="og:site_name" content="SAIFUL MUHAJIR">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="SAIFUL MUHAJIR">
+    <meta name="twitter:description" content="another viewpoint">
+    
+      <meta name="twitter:creator" content="@saifulmuhajir">
+    
+    
+
+    
+    
+
+    
+      <meta property="og:image" content="https://lh3.googleusercontent.com/ncECN4NltOXw4tTzJDcFOkhStdNUywEINkOreBlX4Mb05IOZlzzTFlywf_5VxB56esRpNrUm-lr5ObTr38Zgf0h_gUwwtEEnAwRk7G29hoACrHxYYFsViVIDySY9uJ3jOnicHkq3C7FbbMs4FhVgWyzoG5JbKYvJ05FSpHSS3Et6TYKHftLKCjICMqCdfu_Ap2dbDRe35TbAhYWzl48hxxDe9gOiS8t00kjzpRObAG7j9Aoss63NXDW_QhJZ52-sisKmP270ZpilsiLDo2_IR7ZYPPawHapey-OpWP7j01WzGH2DN4Hhh1z50rgOsjT0xDt-MgD2eyDwOrSI6BsQFm1whhGlI_OgyDh8ifT75FqfDhpubdUKtC1s_QRyxmkt307flHJ8XsvHjzjpmfwUY4sgMZ3RGGvjHz6vth3hSlwzqJ939MIrA1aCJfT5u4Z8qYsdrsUt76-UrDoNlQMMvAGGUHl7JkjH37rouiiCWO4gK8UZ3Ge62XghRbryBAt6Sex2Ah-ZcUeGspIoqwDwuQnYbuC_4_K2hKRTyQ0spzNsh_S6R8C8Zab6igLO3gFsNlAQ5pxWxlF-JYpYIOxYkB7mzhkTj4AR6G4qIHldVRd9veMHhRvs=s319-no">
+    
+
+    
+    
+    
+
+    
+
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.css" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" />
+    
+    
+    <link rel="stylesheet" href="https://saiful.tech/css/style-u6mk0ojoywresbx8iepslrmmhl4stuhrsxuwhkpwrkrx7mryjcaimasnk4pi.min.css" />
+    
+    
+
+    
+      
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="1">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="https://saiful.tech/">SAIFUL MUHAJIR</a>
+  </div>
+  
+    
+      <a class="header-right-icon st-search-show-outputs"
+         href="https://saiful.tech/#search">
+    
+    
+      <i class="fa fa-lg fa-search"></i>
+    
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="1">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="https://saiful.tech/#about">
+          <img class="sidebar-profile-picture" src="https://lh3.googleusercontent.com/ncECN4NltOXw4tTzJDcFOkhStdNUywEINkOreBlX4Mb05IOZlzzTFlywf_5VxB56esRpNrUm-lr5ObTr38Zgf0h_gUwwtEEnAwRk7G29hoACrHxYYFsViVIDySY9uJ3jOnicHkq3C7FbbMs4FhVgWyzoG5JbKYvJ05FSpHSS3Et6TYKHftLKCjICMqCdfu_Ap2dbDRe35TbAhYWzl48hxxDe9gOiS8t00kjzpRObAG7j9Aoss63NXDW_QhJZ52-sisKmP270ZpilsiLDo2_IR7ZYPPawHapey-OpWP7j01WzGH2DN4Hhh1z50rgOsjT0xDt-MgD2eyDwOrSI6BsQFm1whhGlI_OgyDh8ifT75FqfDhpubdUKtC1s_QRyxmkt307flHJ8XsvHjzjpmfwUY4sgMZ3RGGvjHz6vth3hSlwzqJ939MIrA1aCJfT5u4Z8qYsdrsUt76-UrDoNlQMMvAGGUHl7JkjH37rouiiCWO4gK8UZ3Ge62XghRbryBAt6Sex2Ah-ZcUeGspIoqwDwuQnYbuC_4_K2hKRTyQ0spzNsh_S6R8C8Zab6igLO3gFsNlAQ5pxWxlF-JYpYIOxYkB7mzhkTj4AR6G4qIHldVRd9veMHhRvs=s319-no" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">saifulmuhajir</h4>
+        
+          <h5 class="sidebar-profile-bio">PostgreSQL Database Administrator</h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://saiful.tech/categories">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://saiful.tech/tags">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://saiful.tech/archives">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-archive"></i>
+      
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://saiful.tech/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-home"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://github.com/saifulmuhajir" target="_blank">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-github"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://saiful.tech/index.xml">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-rss"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+    </ul>
+  </div>
+</nav>
+
+      
+        
+
+      
+      <div id="main" data-behavior="1"
+        class="
+               hasCoverMetaIn
+               ">
+        
+          <section class="postShorten-group main-content-wrap">
+            
+            
+              
+  
+    
+      
+        
+          
+            
+          
+        
+      
+    
+  
+
+
+  
+
+<article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
+  <div class="postShorten-wrap">
+    
+    <div class="postShorten-header">
+      <h1 class="postShorten-title" itemprop="headline">
+        <a class="link-unstyled" href="https://saiful.tech/nakatrip-mengarungi-sungai-cicatih-citatih/">
+          [NakaTrip] Mengarungi Sungai Cicatih (Citatih)
+        </a>
+      </h1>
+      <div class="postShorten-meta post-meta">
+  
+    <time itemprop="datePublished" datetime="2017-04-25T03:11:46Z">
+      
+  April 25, 2017
+
+    </time>
+  
+  
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://saiful.tech/categories/miscellaneous">Miscellaneous</a>
+    
+  
+
+
+</div>
+
+    </div>
+    <div class="postShorten-excerpt" itemprop="articleBody">
+      <p>
+        Terakhir kali berarung jeram adalah saat saya duduk di bangku kuliah. Saat itu saya aktif sebagai trainer outbond bersama beberapa kawan senior untuk bersenang-senang dan tentu saja dapat duit. Setelah beberapa tahun lamanya, akhirnya saya kembali mengarungi sungai bersama sebuah organizer bernama Riam Jeram.
+Namun, kali ini saya tidak akan menceritakan detail bagaimana perjalanan arung jeram yang kami lakukan pada 8 April kemarin, melainkan apa yang bisa disimpulkan supaya menjadi pelajaran bagi banyak orang, my takeaways.
+        <br>
+        <a href="https://saiful.tech/nakatrip-mengarungi-sungai-cicatih-citatih/" class="postShorten-excerpt_link link">Continue reading</a>
+        
+      </p>
+    </div>
+  </div>
+  
+    <a href="https://saiful.tech/nakatrip-mengarungi-sungai-cicatih-citatih/">
+      <div class="postShorten-thumbnailimg">
+        <img alt="" itemprop="image" src="https://lh3.googleusercontent.com/mY7zHPRaHSUKXuMFnAUDEUf-u9wol1GmfzsAMpTG9tmu3541FYy0ZUNWudcJ-4EnizcXoTInKBSnxOaa3dY=w1920-h1080-rw-no"/>
+      </div>
+    </a>
+  
+</article>
+
+            
+            
+
+          </section>
+        
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2017 saifulmuhajir. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://lh3.googleusercontent.com/ncECN4NltOXw4tTzJDcFOkhStdNUywEINkOreBlX4Mb05IOZlzzTFlywf_5VxB56esRpNrUm-lr5ObTr38Zgf0h_gUwwtEEnAwRk7G29hoACrHxYYFsViVIDySY9uJ3jOnicHkq3C7FbbMs4FhVgWyzoG5JbKYvJ05FSpHSS3Et6TYKHftLKCjICMqCdfu_Ap2dbDRe35TbAhYWzl48hxxDe9gOiS8t00kjzpRObAG7j9Aoss63NXDW_QhJZ52-sisKmP270ZpilsiLDo2_IR7ZYPPawHapey-OpWP7j01WzGH2DN4Hhh1z50rgOsjT0xDt-MgD2eyDwOrSI6BsQFm1whhGlI_OgyDh8ifT75FqfDhpubdUKtC1s_QRyxmkt307flHJ8XsvHjzjpmfwUY4sgMZ3RGGvjHz6vth3hSlwzqJ939MIrA1aCJfT5u4Z8qYsdrsUt76-UrDoNlQMMvAGGUHl7JkjH37rouiiCWO4gK8UZ3Ge62XghRbryBAt6Sex2Ah-ZcUeGspIoqwDwuQnYbuC_4_K2hKRTyQ0spzNsh_S6R8C8Zab6igLO3gFsNlAQ5pxWxlF-JYpYIOxYkB7mzhkTj4AR6G4qIHldVRd9veMHhRvs=s319-no" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">saifulmuhajir</h4>
+    
+      <div id="about-card-bio">PostgreSQL Database Administrator</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        @tokopedia
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        Jakarta, ID
+      </div>
+    
+  </div>
+</div>
+
+    <div id="algolia-search-modal" class="modal-container">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="close-button"><i class="fa fa-close"></i></span>
+      <a href="https://algolia.com" target="_blank" class="searchby-algolia text-color-light link-unstyled">
+        <span class="searchby-algolia-text text-color-light text-small">by</span>
+        <img class="searchby-algolia-logo" src="https://www.algolia.com/static_assets/images/press/downloads/algolia-light.svg">
+      </a>
+      <i class="search-icon fa fa-search"></i>
+      <form id="algolia-search-form">
+        <input type="text" id="algolia-search-input" name="search"
+          class="form-control input--large search-input" placeholder="Search" />
+      </form>
+    </div>
+    <div class="modal-body">
+      <div class="no-result text-color-light text-center">no post found</div>
+      <div class="results">
+        
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="https://saiful.tech/postgresql-logical-replication/">
+                <h3 class="media-heading">[PostgreSQL] Logical Replication di PostgreSQL 10</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Aug 8, 2017
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">Kondisi saat ini, sampai PostgreSQL 9.x, untuk replikasi database dengan batasan tertentu alias tidak replikasi data secara keseluruhan pada cluster database dapat dilakukan dengan dua cara yaitu dump-restore, dan replikasi dengan memanfaatkan trigger. Jika menggunakan trigger, maka pilihan alatnya adalah Londiste dari Skytools atau Bucardo yang masing-masing memiliki nilai plus dan minus. Dengan memanfaatkan trigger ini replikasi cukup bisa diandalkan karena nyaris realtime. Sementara memanfaatkan dump-restore tentu saja tidak dapat dilakukan secara realtime akan tetapi masing-masing host memiliki sedikit ketergantungan.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="https://saiful.tech/postgresql-replication-slot/">
+                <h3 class="media-heading">[PostgreSQL] Replication Slot</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Jul 7, 2017
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">Sejak PostgreSQL 9.4, ada parameter baru di Postgres yaitu max_replication_slot. Apa sih ini?
+Replication slot adalah mekanisme dalam Postgres yang secara otomatis akan memastikan bahwa WAL files dari host master dijaga keberadaannya sampai semua standby server menerimanya. Dengan kata lain, slot replikasi akan memastikan bahwa WAL files yang ada di host master TIDAK dihapus sampai semua server standby sudah mengambilnya. Slot replikasi ini sebenarnya bisa digantikan dengan parameter wal_keep_segments dan archive_command, hanya saja cara kerja keduanya berbeda karena slot memastikan kebutuhan WAL files terpenuhi sedangkan wal_keep_segments menggunakan parameter jumlah file.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="https://saiful.tech/postgresql-amazon-rds-as-a-master-how-to-replicate-from-aws/">
+                <h3 class="media-heading">[PostgreSQL] Amazon RDS as A Master: How to Replicate from AWS</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  May 5, 2017
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">There are lots of ways to replicate PostgreSQL database including streaming replication, logical replication, trigger-based replication and so on. And sometimes you need all of them depending on you and your business needs. I can say that replication options in Postgres is somewhat limitless.
+And this time, I am writing how to replicate and use Amazon RDS as the master and use another as the slaves.
+Why would you do that?</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="https://saiful.tech/postgresql-bucardo-replication-update-is-slow/">
+                <h3 class="media-heading">[PostgreSQL] Bucardo Replication Update is Slow?</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  May 5, 2017
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">Bucardo is one of the replication system for PostgreSQL where it works asynchronous and using triggers to replicate the data. And one of the cool feature is you can have multi masters as well as slaves. Since the replication is working on table level to replicate the data, we can use it to replicate partial data and of course DLL is not supported. There are many more features you can look here.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="https://saiful.tech/nakatrip-mengarungi-sungai-cicatih-citatih/">
+                <h3 class="media-heading">[NakaTrip] Mengarungi Sungai Cicatih (Citatih)</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Apr 4, 2017
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">Terakhir kali berarung jeram adalah saat saya duduk di bangku kuliah. Saat itu saya aktif sebagai trainer outbond bersama beberapa kawan senior untuk bersenang-senang dan tentu saja dapat duit. Setelah beberapa tahun lamanya, akhirnya saya kembali mengarungi sungai bersama sebuah organizer bernama Riam Jeram.
+Namun, kali ini saya tidak akan menceritakan detail bagaimana perjalanan arung jeram yang kami lakukan pada 8 April kemarin, melainkan apa yang bisa disimpulkan supaya menjadi pelajaran bagi banyak orang, my takeaways.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="https://saiful.tech/kepemimpinan-dan-kita/">
+                <h3 class="media-heading">Kepemimpinan dan Kita</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Jul 7, 2007
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">Seperti biasa, saya selalu ingin tahu tentang apapun. Tentang semua ilmu yang seharusnya bisa saya simpan semuanya dalam otak saya yang memang sangat besar sekali. Dengan rasa ingin tahu, maka akhirnya saya menjatuhkan pilihan diantaranya pada keorganisasian yang ada di lembaga-lembaga yang saya tahu. Dari organisasi-organisasi yang saya ikuti saya berharap tahu banyak dan mampu mengetahui semua yang saya belum ketahui.
+Entah karena memang sudah takdir saya atau memang saya terlihat tidak pantas menjadi pemimpin dalam organisasi, dalam setiap organisasi yang saya ikuti saya selalu hanya bisa menjadi anggota dan tidak pernah benar-benar menjadi seorang pemimpin, kecuali pemimpin atas diri saya sendiri.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="https://saiful.tech/the-beautiful-day/">
+                <h3 class="media-heading">A Beautiful Day</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Jul 7, 2007
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">Terima kasih Tuhan.
+Itulah kata-kata yang seharusnya keluar dari mulut saya pertama kali ketika hal ini terjadi. Namun, saya melupakan kata-kata itu dan menggantinya dengan malam yang indah. I felt wrong for this.
+Malam ini, atas kuasa Tuhan melalui teman-teman seperjuangan saya -dianugerahi- diberikan sebuah wewenang, tanggung jawab dan amanat yang tidak pernah terpikirkan sebelumnya. Benar-benar sebuah kejutan yang amat tidak diduga.
+Iya, saya terpilih sebagai Ketua Umum Himpunan Mahasiswa Teknik Informatika kampus tercinta, Univ.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="https://saiful.tech/post/">
+                <h3 class="media-heading">Posts</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Aug 8, 2017
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather"></div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+      </div>
+    </div>
+    <div class="modal-footer">
+      <p class="results-count text-medium"
+         data-message-zero="no post found"
+         data-message-one="1 post found"
+         data-message-other="{n} posts found">
+         8 posts found
+      </p>
+    </div>
+  </div>
+</div>
+    
+  
+    
+    <div id="cover" style="background-image:url('https://lh3.googleusercontent.com/AL-dXRyck-EnFexSDhWFTRh4D6mDw0k4I07GIBO00hrOeFtJKkzh6TIemwG1qPk_rS-YwYXWXR62ZaiHRnk=w1920-h1080-rw-no');"></div>
+  
+
+
+    
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.js"></script>
+
+
+<script src="https://saiful.tech/js/script-wl33z0n6ocaypepiqrazthtivfrliqijej4rq8ek8gvrv1awftmgjuv8k4zc.min.js"></script>
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight').each(function(i, block) {
+    var code = "";
+    hljs.highlightAuto(block.innerText).value.split(/\r\n|\r|\n/).forEach(function(line) {
+      code += "<span class=\"line\">" + line + "</span><br>";
+    });
+    if (code.length > 0) {
+      block.innerHTML = code;  
+    }
+  });
+  $('pre > code').each(function(i, block) {
+    $(this).addClass('codeblock');
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+
+
+
+    
+  </body>
+</html>
+

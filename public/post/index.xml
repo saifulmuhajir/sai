@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on SAIFUL MUHAJIR</title>
+    <link>https://saiful.tech/post/</link>
+    <description>Recent content in Posts on SAIFUL MUHAJIR</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 15 Aug 2017 07:49:34 +0700</lastBuildDate>
+    
+	<atom:link href="https://saiful.tech/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>[PostgreSQL] Logical Replication di PostgreSQL 10</title>
+      <link>https://saiful.tech/postgresql-logical-replication/</link>
+      <pubDate>Tue, 15 Aug 2017 07:49:34 +0700</pubDate>
+      
+      <guid>https://saiful.tech/postgresql-logical-replication/</guid>
+      <description>Kondisi saat ini, sampai PostgreSQL 9.x, untuk replikasi database dengan batasan tertentu alias tidak replikasi data secara keseluruhan pada cluster database dapat dilakukan dengan dua cara yaitu dump-restore, dan replikasi dengan memanfaatkan trigger. Jika menggunakan trigger, maka pilihan alatnya adalah Londiste dari Skytools atau Bucardo yang masing-masing memiliki nilai plus dan minus. Dengan memanfaatkan trigger ini replikasi cukup bisa diandalkan karena nyaris realtime. Sementara memanfaatkan dump-restore tentu saja tidak dapat dilakukan secara realtime akan tetapi masing-masing host memiliki sedikit ketergantungan.</description>
+    </item>
+    
+    <item>
+      <title>[PostgreSQL] Replication Slot</title>
+      <link>https://saiful.tech/postgresql-replication-slot/</link>
+      <pubDate>Tue, 25 Jul 2017 03:47:34 +0000</pubDate>
+      
+      <guid>https://saiful.tech/postgresql-replication-slot/</guid>
+      <description>Sejak PostgreSQL 9.4, ada parameter baru di Postgres yaitu max_replication_slot. Apa sih ini?
+Replication slot adalah mekanisme dalam Postgres yang secara otomatis akan memastikan bahwa WAL files dari host master dijaga keberadaannya sampai semua standby server menerimanya. Dengan kata lain, slot replikasi akan memastikan bahwa WAL files yang ada di host master TIDAK dihapus sampai semua server standby sudah mengambilnya. Slot replikasi ini sebenarnya bisa digantikan dengan parameter wal_keep_segments dan archive_command, hanya saja cara kerja keduanya berbeda karena slot memastikan kebutuhan WAL files terpenuhi sedangkan wal_keep_segments menggunakan parameter jumlah file.</description>
+    </item>
+    
+    <item>
+      <title>[PostgreSQL] Amazon RDS as A Master: How to Replicate from AWS</title>
+      <link>https://saiful.tech/postgresql-amazon-rds-as-a-master-how-to-replicate-from-aws/</link>
+      <pubDate>Tue, 30 May 2017 03:36:33 +0000</pubDate>
+      
+      <guid>https://saiful.tech/postgresql-amazon-rds-as-a-master-how-to-replicate-from-aws/</guid>
+      <description>There are lots of ways to replicate PostgreSQL database including streaming replication, logical replication, trigger-based replication and so on. And sometimes you need all of them depending on you and your business needs. I can say that replication options in Postgres is somewhat limitless.
+And this time, I am writing how to replicate and use Amazon RDS as the master and use another as the slaves.
+Why would you do that?</description>
+    </item>
+    
+    <item>
+      <title>[PostgreSQL] Bucardo Replication Update is Slow?</title>
+      <link>https://saiful.tech/postgresql-bucardo-replication-update-is-slow/</link>
+      <pubDate>Mon, 15 May 2017 03:55:20 +0000</pubDate>
+      
+      <guid>https://saiful.tech/postgresql-bucardo-replication-update-is-slow/</guid>
+      <description>Bucardo is one of the replication system for PostgreSQL where it works asynchronous and using triggers to replicate the data. And one of the cool feature is you can have multi masters as well as slaves. Since the replication is working on table level to replicate the data, we can use it to replicate partial data and of course DLL is not supported. There are many more features you can look here.</description>
+    </item>
+    
+    <item>
+      <title>[NakaTrip] Mengarungi Sungai Cicatih (Citatih)</title>
+      <link>https://saiful.tech/nakatrip-mengarungi-sungai-cicatih-citatih/</link>
+      <pubDate>Tue, 25 Apr 2017 03:11:46 +0000</pubDate>
+      
+      <guid>https://saiful.tech/nakatrip-mengarungi-sungai-cicatih-citatih/</guid>
+      <description>Terakhir kali berarung jeram adalah saat saya duduk di bangku kuliah. Saat itu saya aktif sebagai trainer outbond bersama beberapa kawan senior untuk bersenang-senang dan tentu saja dapat duit. Setelah beberapa tahun lamanya, akhirnya saya kembali mengarungi sungai bersama sebuah organizer bernama Riam Jeram.
+Namun, kali ini saya tidak akan menceritakan detail bagaimana perjalanan arung jeram yang kami lakukan pada 8 April kemarin, melainkan apa yang bisa disimpulkan supaya menjadi pelajaran bagi banyak orang, my takeaways.</description>
+    </item>
+    
+    <item>
+      <title>Kepemimpinan dan Kita</title>
+      <link>https://saiful.tech/kepemimpinan-dan-kita/</link>
+      <pubDate>Tue, 10 Jul 2007 10:04:00 +0000</pubDate>
+      
+      <guid>https://saiful.tech/kepemimpinan-dan-kita/</guid>
+      <description>Seperti biasa, saya selalu ingin tahu tentang apapun. Tentang semua ilmu yang seharusnya bisa saya simpan semuanya dalam otak saya yang memang sangat besar sekali. Dengan rasa ingin tahu, maka akhirnya saya menjatuhkan pilihan diantaranya pada keorganisasian yang ada di lembaga-lembaga yang saya tahu. Dari organisasi-organisasi yang saya ikuti saya berharap tahu banyak dan mampu mengetahui semua yang saya belum ketahui.
+Entah karena memang sudah takdir saya atau memang saya terlihat tidak pantas menjadi pemimpin dalam organisasi, dalam setiap organisasi yang saya ikuti saya selalu hanya bisa menjadi anggota dan tidak pernah benar-benar menjadi seorang pemimpin, kecuali pemimpin atas diri saya sendiri.</description>
+    </item>
+    
+    <item>
+      <title>A Beautiful Day</title>
+      <link>https://saiful.tech/the-beautiful-day/</link>
+      <pubDate>Sat, 07 Jul 2007 18:20:00 +0000</pubDate>
+      
+      <guid>https://saiful.tech/the-beautiful-day/</guid>
+      <description>Terima kasih Tuhan.
+Itulah kata-kata yang seharusnya keluar dari mulut saya pertama kali ketika hal ini terjadi. Namun, saya melupakan kata-kata itu dan menggantinya dengan malam yang indah. I felt wrong for this.
+Malam ini, atas kuasa Tuhan melalui teman-teman seperjuangan saya -dianugerahi- diberikan sebuah wewenang, tanggung jawab dan amanat yang tidak pernah terpikirkan sebelumnya. Benar-benar sebuah kejutan yang amat tidak diduga.
+Iya, saya terpilih sebagai Ketua Umum Himpunan Mahasiswa Teknik Informatika kampus tercinta, Univ.</description>
+    </item>
+    
+  </channel>
+</rss>

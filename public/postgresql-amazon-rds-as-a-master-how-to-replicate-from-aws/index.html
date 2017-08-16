@@ -1,0 +1,904 @@
+
+
+  
+    
+  
+
+
+  
+
+
+
+
+
+  
+
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Hugo 0.25.1">
+    <meta name="theme" content="Tranquilpeak 0.3.1-BETA">
+    <title>[PostgreSQL] Amazon RDS as A Master: How to Replicate from AWS</title>
+    <meta name="author" content="saifulmuhajir">
+    <meta name="keywords" content=", postgres, postgresql, saiful, saifulmuhajir, technology, indonesia, database administrator">
+
+    <link rel="icon" href="https://saiful.tech/images/favicon.ico">
+    
+
+    
+    <meta name="description" content="There are lots of ways to replicate PostgreSQL database including streaming replication, logical replication, trigger-based replication and so on. And sometimes you need all of them depending on you and your business needs. I can say that replication options in Postgres is somewhat limitless.
+And this time, I am writing how to replicate and use Amazon RDS as the master and use another as the slaves.
+Why would you do that?">
+    <meta property="og:description" content="There are lots of ways to replicate PostgreSQL database including streaming replication, logical replication, trigger-based replication and so on. And sometimes you need all of them depending on you and your business needs. I can say that replication options in Postgres is somewhat limitless.
+And this time, I am writing how to replicate and use Amazon RDS as the master and use another as the slaves.
+Why would you do that?">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="[PostgreSQL] Amazon RDS as A Master: How to Replicate from AWS">
+    <meta property="og:url" content="/postgresql-amazon-rds-as-a-master-how-to-replicate-from-aws/">
+    <meta property="og:site_name" content="SAIFUL MUHAJIR">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="SAIFUL MUHAJIR">
+    <meta name="twitter:description" content="There are lots of ways to replicate PostgreSQL database including streaming replication, logical replication, trigger-based replication and so on. And sometimes you need all of them depending on you and your business needs. I can say that replication options in Postgres is somewhat limitless.
+And this time, I am writing how to replicate and use Amazon RDS as the master and use another as the slaves.
+Why would you do that?">
+    
+      <meta name="twitter:creator" content="@saifulmuhajir">
+    
+    
+
+    
+    
+
+    
+      <meta property="og:image" content="https://lh3.googleusercontent.com/ncECN4NltOXw4tTzJDcFOkhStdNUywEINkOreBlX4Mb05IOZlzzTFlywf_5VxB56esRpNrUm-lr5ObTr38Zgf0h_gUwwtEEnAwRk7G29hoACrHxYYFsViVIDySY9uJ3jOnicHkq3C7FbbMs4FhVgWyzoG5JbKYvJ05FSpHSS3Et6TYKHftLKCjICMqCdfu_Ap2dbDRe35TbAhYWzl48hxxDe9gOiS8t00kjzpRObAG7j9Aoss63NXDW_QhJZ52-sisKmP270ZpilsiLDo2_IR7ZYPPawHapey-OpWP7j01WzGH2DN4Hhh1z50rgOsjT0xDt-MgD2eyDwOrSI6BsQFm1whhGlI_OgyDh8ifT75FqfDhpubdUKtC1s_QRyxmkt307flHJ8XsvHjzjpmfwUY4sgMZ3RGGvjHz6vth3hSlwzqJ939MIrA1aCJfT5u4Z8qYsdrsUt76-UrDoNlQMMvAGGUHl7JkjH37rouiiCWO4gK8UZ3Ge62XghRbryBAt6Sex2Ah-ZcUeGspIoqwDwuQnYbuC_4_K2hKRTyQ0spzNsh_S6R8C8Zab6igLO3gFsNlAQ5pxWxlF-JYpYIOxYkB7mzhkTj4AR6G4qIHldVRd9veMHhRvs=s319-no">
+    
+
+    
+    
+    
+
+    
+
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.css" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" />
+    
+    
+    <link rel="stylesheet" href="https://saiful.tech/css/style-u6mk0ojoywresbx8iepslrmmhl4stuhrsxuwhkpwrkrx7mryjcaimasnk4pi.min.css" />
+    
+    
+
+    
+      
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="4">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="https://saiful.tech/">SAIFUL MUHAJIR</a>
+  </div>
+  
+    
+      <a class="header-right-icon st-search-show-outputs"
+         href="https://saiful.tech/#search">
+    
+    
+      <i class="fa fa-lg fa-search"></i>
+    
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="4">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="https://saiful.tech/#about">
+          <img class="sidebar-profile-picture" src="https://lh3.googleusercontent.com/ncECN4NltOXw4tTzJDcFOkhStdNUywEINkOreBlX4Mb05IOZlzzTFlywf_5VxB56esRpNrUm-lr5ObTr38Zgf0h_gUwwtEEnAwRk7G29hoACrHxYYFsViVIDySY9uJ3jOnicHkq3C7FbbMs4FhVgWyzoG5JbKYvJ05FSpHSS3Et6TYKHftLKCjICMqCdfu_Ap2dbDRe35TbAhYWzl48hxxDe9gOiS8t00kjzpRObAG7j9Aoss63NXDW_QhJZ52-sisKmP270ZpilsiLDo2_IR7ZYPPawHapey-OpWP7j01WzGH2DN4Hhh1z50rgOsjT0xDt-MgD2eyDwOrSI6BsQFm1whhGlI_OgyDh8ifT75FqfDhpubdUKtC1s_QRyxmkt307flHJ8XsvHjzjpmfwUY4sgMZ3RGGvjHz6vth3hSlwzqJ939MIrA1aCJfT5u4Z8qYsdrsUt76-UrDoNlQMMvAGGUHl7JkjH37rouiiCWO4gK8UZ3Ge62XghRbryBAt6Sex2Ah-ZcUeGspIoqwDwuQnYbuC_4_K2hKRTyQ0spzNsh_S6R8C8Zab6igLO3gFsNlAQ5pxWxlF-JYpYIOxYkB7mzhkTj4AR6G4qIHldVRd9veMHhRvs=s319-no" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">saifulmuhajir</h4>
+        
+          <h5 class="sidebar-profile-bio">PostgreSQL Database Administrator</h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://saiful.tech/categories">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://saiful.tech/tags">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://saiful.tech/archives">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-archive"></i>
+      
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://saiful.tech/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-home"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://github.com/saifulmuhajir" target="_blank">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-github"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://saiful.tech/index.xml">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-rss"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+    </ul>
+  </div>
+</nav>
+
+      
+
+      <div id="main" data-behavior="4"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+            <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title" itemprop="headline">
+      [PostgreSQL] Amazon RDS as A Master: How to Replicate from AWS
+    </h1>
+  
+  <div class="postShorten-meta post-meta">
+  
+    <time itemprop="datePublished" datetime="2017-05-30T03:36:33Z">
+      
+  May 30, 2017
+
+    </time>
+  
+  
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://saiful.tech/categories/postgresql">PostgreSQL</a>, 
+    
+      <a class="category-link" href="https://saiful.tech/categories/technology">Technology</a>
+    
+  
+
+
+</div>
+
+</div>
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              <p>There are lots of ways to <strong>replicate PostgreSQL database</strong> including <em>streaming replication, logical replication, trigger-based replication</em> and so on. And sometimes you need all of them depending on you and your business needs. I can say that replication options in Postgres is somewhat limitless.</p>
+
+<p>And this time, I am writing how to replicate and use <strong>Amazon RDS as the master</strong> and use another as the slaves.</p>
+
+<p>Why would you do that? Why would anyone bring down their cloud servers? This time, my reason is our data analysts needs to <em>as the name suggests</em> analyze transactions data in their own machine, which is located in our own data center while the database needed is on the cloud. We don&rsquo;t allow them to access production servers because, you know, production is scary stuff. That&rsquo;s what we told them. <em>:grimacing:</em></p>
+
+<p>Here&rsquo;s the preparation stuff:</p>
+
+<ul>
+<li>PostgreSQL servers &gt;= 9.1 in Amazon RDS, this is because we need <a href="https://aws.amazon.com/blogs/aws/rds-postgres-read-replicas/">session replication role</a></li>
+<li>Server for Bucardo and Postgres destination</li>
+<li>Bucardo, obviously</li>
+</ul>
+
+<p>That would be all.</p>
+
+<p><a href="https://bucardo.org/wiki/Bucardo/Installation">Bucardo</a> can be installed anywhere and this time I put it in the same server where Postgres destination is located. First, we need to grab Bucardo dependencies consist of some Perl modules including <strong>DBIx::Safe, boolean, DBI, DBD::Pg, Test::Simple.</strong></p>
+
+<pre><code>sudo apt-get install libdbd-pg-perl libdbix-safe-perl postgresql-plperl-9.6 postgresql-contrib-9.6
+</code></pre>
+
+<p>Once the&rsquo;re done, we can continue to grab the source files and install to the system.</p>
+
+<pre><code>$ wget http://bucardo.org/downloads/Bucardo-5.4.1.tar.gz
+$ tar xvzf Bucardo-5.4.1.tar.gz
+$ cd Bucardo-5.4.1
+$ perl Makefile.PL
+Checking if your kit is complete...
+Looks good
+Warning: prerequisite DBD::Pg 2.0 not found.
+Warning: prerequisite boolean 0 not found.
+Writing Makefile for Bucardo
+Writing MYMETA.yml and MYMETA.json
+</code></pre>
+
+<p>And now let&rsquo;s perform make:</p>
+
+<pre><code>$ make
+cp bucardo.schema blib/share/bucardo.schema
+cp Bucardo.pm blib/lib/Bucardo.pm
+cp bucardo blib/script/bucardo
+/usr/bin/perl -MExtUtils::MY -e 'MY-&gt;fixin(shift)' -- blib/script/bucardo
+Manifying blib/man1/bucardo.1pm
+Manifying blib/man3/Bucardo.3pm
+</code></pre>
+
+<p>And&hellip; install!</p>
+
+<pre><code>$ sudo make install
+Installing /usr/local/share/perl/5.18.2/Bucardo.pm
+Installing /usr/local/man/man1/bucardo.1pm
+Installing /usr/local/man/man3/Bucardo.3pm
+Installing /usr/local/bin/bucardo
+Installing /usr/local/share/bucardo/bucardo.schema
+Appending installation info to /usr/local/lib/perl/5.18.2/perllocal.pod
+</code></pre>
+
+<p>Now we need to make sure that the installation process is successful:</p>
+
+<pre><code>$ bucardo --version
+bucardo version 5.4.1
+</code></pre>
+
+<p>Viola! But, we need to make sure that Bucardo can run so we will need pid and log directory for it.</p>
+
+<pre><code>$ sudo mkdir -p /var/run/bucardo
+$ sudo mkdir -p /var/log/bucardo
+$ sudo chown postgres:postgres /var/run/bucardo
+$ sudo chown postgres:postgres /var/log/bucardo
+</code></pre>
+
+<p>Now that all looks good, we can continue to install the Bucardo database.</p>
+
+<p>Before we proceed, let&rsquo;s create a file so that Bucardo can use it as configuration with following details:</p>
+
+<pre><code>dbhost=localhost
+dbname=bucardo
+dbport=5432
+dbuser=superman
+</code></pre>
+
+<p>And put them in .bucardorc file inside user&rsquo;s home directory. This file will tell Bucardo that we&rsquo;ll be using bucardo database in local server with user called &lsquo;superman&rsquo;. Before continuing the process, superman user is needed in the source database (RDS) and destination. So, you have to create them.</p>
+
+<pre><code>$ bucardo install
+This will install the bucardo database into an existing Postgres cluster.
+Postgres must have been compiled with Perl support,
+and you must connect as a superuser
+
+Current connection settings:
+1. Host:           localhost
+2. Port:           5432
+3. User:           superman
+4. Database:       bucardo
+5. PID directory:  /var/run/bucardo
+Enter a number to change it, P to proceed, or Q to quit: P
+
+Postgres version is: 9.6
+Attempting to create and populate the bucardo database and schema
+Database creation is complete
+
+Updated configuration setting &quot;piddir&quot;
+Installation is now complete.
+If you see errors or need help, please email bucardo-general@bucardo.org
+
+You may want to check over the configuration variables next, by running:
+bucardo show all
+Change any setting by using: bucardo set foo=bar
+</code></pre>
+
+<p>The database part in connection settings for your environment may be different but that&rsquo;s okay as long as the user can use it. But this time I will change a parameter in Bucardo because the tables I&rsquo;ll be replicating is big enough and quite busy with lots of updates and inserts.</p>
+
+<pre><code>$ bucardo show all | grep delta
+kid_nodeltarows_sleep     = 0.5
+quick_delta_check         = 1
+
+$ bucardo set quick_delta_check=0
+Set &quot;quick_delta_check&quot; to &quot;0&quot;
+</code></pre>
+
+<p>This is me changing quick_delta_check parameter. This parameter is used for checking delta activity in the tables and skipping it will save me time and keep the replication delay as small as possible.</p>
+
+<p>Everything is now in place and we can continue to set the configuration for databases, tables, syncs, and so on.</p>
+
+<pre><code>$ bucardo add db rds_source1 db=source1 host=source1.rds.amazonaws.com port=5432 user=superman
+Added database &quot;rds_source1&quot;
+$ bucardo add db rds_source2 db=source2 host=source2.rds.amazonaws.com port=5432 user=superman
+Added database &quot;rds_source2&quot;
+$ bucardo add db target_db db=target1 host=localhost port=5432 user=superman
+Added database &quot;target_db&quot;
+</code></pre>
+
+<p>As you can see, I added two sources and one destination for this case because tables needed are located in those two sources and we can verify as follow:</p>
+
+<pre><code>$ bucardo list dbs
+Database: target_db      Status: active  Conn: psql -U superman -d target1 -h localhost
+Database: rds_source1    Status: active  Conn: psql -p 5432 -U superman -d source1 -h source1.rds.amazonaws.com
+Database: rds_source2    Status: active  Conn: psql -p 5432 -U superman -d source2 -h source2.rds.amazonaws.com
+</code></pre>
+
+<p>Before we can continue the next process, we need to create sequences and tables structures on target database. So, just dump the schema and execute the result in the target. And we can move on to add them to Bucardo.</p>
+
+<pre><code>$ bucardo add sequences public.order_id_seq db=source2 herd=source_group1 --verbose
+Added the following tables or sequences:
+public.order_id_seq
+The following tables or sequences are now part of the relgroup &quot;source_group1&quot;:
+public.order_id_seq
+$ bucardo add sequences public.payment_id_seq db=source2 herd=source_group1 --verbose
+Added the following tables or sequences:
+public.payment_id_seq
+The following tables or sequences are now part of the relgroup &quot;source_group1&quot;:
+public.payment_id_seq
+$ bucardo add sequences public.promos_id_seq db=source1 herd=source_group2 --verbose
+Added the following tables or sequences:
+public.promos_id_seq
+The following tables or sequences are now part of the relgroup &quot;source_group2&quot;:
+public.promos_id_seq
+$ bucardo add tables public.promos db=source1 herd=source_group2 --verbose
+Added the following tables or sequences:
+public.promos
+The following tables or sequences are now part of the relgroup &quot;source_group2&quot;:
+public.promos
+$ bucardo add tables promo_code db=source1 herd=source_group2 --verbose
+Added the following tables or sequences:
+public.promo_code
+The following tables or sequences are now part of the relgroup &quot;source_group2&quot;:
+public.promo_code
+$ bucardo add tables public.order db=source2 herd=source_group1 --verbose
+Added the following tables or sequences:
+public.order
+The following tables or sequences are now part of the relgroup &quot;source_group1&quot;:
+public.order
+$ bucardo add tables public.payment db=source2 herd=source_group1 --verbose
+Added the following tables or sequences:
+public.payment
+The following tables or sequences are now part of the relgroup &quot;source_group1&quot;:
+public.payment
+
+$ bucardo list tables
+1. Table: public.promo_code       DB: source1  PK: id (bigint)
+2. Table: public.promos           DB: source1  PK: id (integer)
+3. Table: public.order            DB: source2  PK: id (bigint)
+4. Table: public.payment          DB: source2  PK: id (bigint)
+
+$ bucardo list sequences
+Sequence: public.order_id_seq           DB: source2
+Sequence: public.payment_id_seq         DB: source2
+Sequence: public.promos_id_seq          DB: source1
+</code></pre>
+
+<p>Since we added <em>herd</em> in our add tables command, the tables and sequences added are now attached to relgroups a.k.a. herds.</p>
+
+<pre><code>$ bucardo list relgroups
+Relgroup: source_group2  DB: source1  Members: public.promos, public.promo_code_id_seq, public.promo_code
+Relgroup: source_group1  DB: source2  Members: public.order, public.order_id_seq, public.payment, public.payment_id_seq
+</code></pre>
+
+<p>This group will be used in sync configuration to tell which relgroups belongs to a sync.</p>
+
+<p>Everything is in place and the last step needed is to create syncs. But, this last step will require <a href="https://www.postgresql.org/docs/9.6/static/explicit-locking.html">share row exclusive locks on the tables</a> and will conflict with almost every locks in Postgres except access share and row share. So, to make everything runs smoothly, you may need to stop your production applications to access the database.</p>
+
+<pre><code>$ bucardo add sync sync1 relgroup=source_group1 dbs=rds_source1:source,target_db:target onetimecopy=2 --verbose
+Added sync &quot;sync1&quot;
+Created a new dbgroup named &quot;sync1&quot;
+$ bucardo add sync sync2 relgroup=source_group2 dbs=rds_source2:source,target_db:target onetimecopy=2 --verbose
+Added sync &quot;sync2&quot;
+Created a new dbgroup named &quot;sync2&quot;
+
+$ bucardo list syncs
+-- syncs:
+Sync &quot;sync1&quot;  Relgroup &quot;source_group1&quot; [Active]
+DB group &quot;sync1&quot; target_db:target rds_source1:source
+Sync &quot;sync2&quot;  Relgroup &quot;source_group2&quot; [Active]
+DB group &quot;sync2&quot; target_db:target rds_source2:source
+</code></pre>
+
+<p>And now that we have everything set, you can start your applications again and the database is back open and running for everyone. All that&rsquo;s left is starting replication so that the tables will be copied and updates will be received by the slave.</p>
+
+<p><code>$ bucardo start</code></p>
+
+<p>If everything is fine, you will see Bucardo process running on your sources and slave and the status command will print the result.</p>
+
+<pre><code>$ bucardo status
+PID of Bucardo MCP: 2729
+Name        State    Last good    Time    Last I/D    Last bad    Time
+==========+========+============+=======+===========+===========+=======
+sync1     | Good   | 06:12:03   | 5s    | 5/120     | none      |
+sync2     | Good   | 05:02:20   | 30s   | 0/20      | none      |
+</code></pre>
+
+<p>Insert new data on source1:</p>
+
+<pre><code>rds_source1 &gt; INSERT into public.order values (10000,'This is order #10000',now(),12);
+INSERT 0 1
+</code></pre>
+
+<p>Check Bucardo status:</p>
+
+<pre><code>$ bucardo status
+PID of Bucardo MCP: 2729
+Name        State    Last good    Time    Last I/D    Last bad    Time
+==========+========+============+=======+===========+===========+=======
+sync1     | Good   | 06:14:07   | 12s   | 0/1       | none      |
+</code></pre>
+
+<p>Verify on the slave:</p>
+
+<pre><code>target_db &gt; SELECT * from public.order where id =10000;
+id    │      order_text        │        create_time         │ operator_id
+======+========================+============================+============
+10000 │  This is order #10000  │ 2017-05-22 17:14:04.504965 │          12
+</code></pre>
+
+<p>That&rsquo;s how you replicate PostgreSQL database from Amazon RDS. Eventhough I haven&rsquo;t tested this in Google Cloud environment and other cloud services, as long as session replication set is available on the services, this should be doable.</p>
+
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="https://saiful.tech//tags/bucardo/">bucardo</a>
+
+  <a class="tag tag--primary tag--small" href="https://saiful.tech//tags/postgresql/">PostgreSQL</a>
+
+  <a class="tag tag--primary tag--small" href="https://saiful.tech//tags/replication/">replication</a>
+
+                  </div>
+                
+              
+            
+            <div class="post-actions-wrap">
+  <nav>
+    <ul class="post-actions post-action-nav">
+      
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="https://saiful.tech/postgresql-replication-slot/" data-tooltip="[PostgreSQL] Replication Slot">
+          
+            <i class="fa fa-angle-left"></i>
+            <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+          </a>
+        </li>
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="https://saiful.tech/postgresql-bucardo-replication-update-is-slow/" data-tooltip="[PostgreSQL] Bucardo Replication Update is Slow?">
+          
+            <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+            <i class="fa fa-angle-right"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </nav>
+  <ul class="post-actions post-action-share">
+    
+      <li class="post-action hide-lg hide-md hide-sm">
+        <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+          <i class="fa fa-share-alt"></i>
+        </a>
+      </li>
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https%3a%2f%2fsaiful.tech%2fpostgresql-amazon-rds-as-a-master-how-to-replicate-from-aws%2f">
+          <i class="fa fa-google-plus"></i>
+        </a>
+      </li>
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fsaiful.tech%2fpostgresql-amazon-rds-as-a-master-how-to-replicate-from-aws%2f">
+          <i class="fa fa-facebook-official"></i>
+        </a>
+      </li>
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fsaiful.tech%2fpostgresql-amazon-rds-as-a-master-how-to-replicate-from-aws%2f">
+          <i class="fa fa-twitter"></i>
+        </a>
+      </li>
+    
+    
+    <li class="post-action">
+      
+        <a class="post-action-btn btn btn--default" href="#">
+      
+        <i class="fa fa-list"></i>
+      </a>
+    </li>
+  </ul>
+</div>
+
+
+            
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2017 saifulmuhajir. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+        <div class="post-actions-wrap">
+  <nav>
+    <ul class="post-actions post-action-nav">
+      
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="https://saiful.tech/postgresql-replication-slot/" data-tooltip="[PostgreSQL] Replication Slot">
+          
+            <i class="fa fa-angle-left"></i>
+            <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+          </a>
+        </li>
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="https://saiful.tech/postgresql-bucardo-replication-update-is-slow/" data-tooltip="[PostgreSQL] Bucardo Replication Update is Slow?">
+          
+            <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+            <i class="fa fa-angle-right"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </nav>
+  <ul class="post-actions post-action-share">
+    
+      <li class="post-action hide-lg hide-md hide-sm">
+        <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+          <i class="fa fa-share-alt"></i>
+        </a>
+      </li>
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https%3a%2f%2fsaiful.tech%2fpostgresql-amazon-rds-as-a-master-how-to-replicate-from-aws%2f">
+          <i class="fa fa-google-plus"></i>
+        </a>
+      </li>
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fsaiful.tech%2fpostgresql-amazon-rds-as-a-master-how-to-replicate-from-aws%2f">
+          <i class="fa fa-facebook-official"></i>
+        </a>
+      </li>
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fsaiful.tech%2fpostgresql-amazon-rds-as-a-master-how-to-replicate-from-aws%2f">
+          <i class="fa fa-twitter"></i>
+        </a>
+      </li>
+    
+    
+    <li class="post-action">
+      
+        <a class="post-action-btn btn btn--default" href="#">
+      
+        <i class="fa fa-list"></i>
+      </a>
+    </li>
+  </ul>
+</div>
+
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+  <ul class="share-options">
+    <li class="share-option">
+      <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https%3a%2f%2fsaiful.tech%2fpostgresql-amazon-rds-as-a-master-how-to-replicate-from-aws%2f">
+        <i class="fa fa-google-plus"></i><span>Share on Google Plus</span>
+      </a>
+    </li>
+    <li class="share-option">
+      <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fsaiful.tech%2fpostgresql-amazon-rds-as-a-master-how-to-replicate-from-aws%2f">
+        <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
+      </a>
+    </li>
+    <li class="share-option">
+      <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fsaiful.tech%2fpostgresql-amazon-rds-as-a-master-how-to-replicate-from-aws%2f">
+        <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+      </a>
+    </li>
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://lh3.googleusercontent.com/ncECN4NltOXw4tTzJDcFOkhStdNUywEINkOreBlX4Mb05IOZlzzTFlywf_5VxB56esRpNrUm-lr5ObTr38Zgf0h_gUwwtEEnAwRk7G29hoACrHxYYFsViVIDySY9uJ3jOnicHkq3C7FbbMs4FhVgWyzoG5JbKYvJ05FSpHSS3Et6TYKHftLKCjICMqCdfu_Ap2dbDRe35TbAhYWzl48hxxDe9gOiS8t00kjzpRObAG7j9Aoss63NXDW_QhJZ52-sisKmP270ZpilsiLDo2_IR7ZYPPawHapey-OpWP7j01WzGH2DN4Hhh1z50rgOsjT0xDt-MgD2eyDwOrSI6BsQFm1whhGlI_OgyDh8ifT75FqfDhpubdUKtC1s_QRyxmkt307flHJ8XsvHjzjpmfwUY4sgMZ3RGGvjHz6vth3hSlwzqJ939MIrA1aCJfT5u4Z8qYsdrsUt76-UrDoNlQMMvAGGUHl7JkjH37rouiiCWO4gK8UZ3Ge62XghRbryBAt6Sex2Ah-ZcUeGspIoqwDwuQnYbuC_4_K2hKRTyQ0spzNsh_S6R8C8Zab6igLO3gFsNlAQ5pxWxlF-JYpYIOxYkB7mzhkTj4AR6G4qIHldVRd9veMHhRvs=s319-no" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">saifulmuhajir</h4>
+    
+      <div id="about-card-bio">PostgreSQL Database Administrator</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        @tokopedia
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        Jakarta, ID
+      </div>
+    
+  </div>
+</div>
+
+    <div id="algolia-search-modal" class="modal-container">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="close-button"><i class="fa fa-close"></i></span>
+      <a href="https://algolia.com" target="_blank" class="searchby-algolia text-color-light link-unstyled">
+        <span class="searchby-algolia-text text-color-light text-small">by</span>
+        <img class="searchby-algolia-logo" src="https://www.algolia.com/static_assets/images/press/downloads/algolia-light.svg">
+      </a>
+      <i class="search-icon fa fa-search"></i>
+      <form id="algolia-search-form">
+        <input type="text" id="algolia-search-input" name="search"
+          class="form-control input--large search-input" placeholder="Search" />
+      </form>
+    </div>
+    <div class="modal-body">
+      <div class="no-result text-color-light text-center">no post found</div>
+      <div class="results">
+        
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="https://saiful.tech/postgresql-logical-replication/">
+                <h3 class="media-heading">[PostgreSQL] Logical Replication di PostgreSQL 10</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Aug 8, 2017
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">Kondisi saat ini, sampai PostgreSQL 9.x, untuk replikasi database dengan batasan tertentu alias tidak replikasi data secara keseluruhan pada cluster database dapat dilakukan dengan dua cara yaitu dump-restore, dan replikasi dengan memanfaatkan trigger. Jika menggunakan trigger, maka pilihan alatnya adalah Londiste dari Skytools atau Bucardo yang masing-masing memiliki nilai plus dan minus. Dengan memanfaatkan trigger ini replikasi cukup bisa diandalkan karena nyaris realtime. Sementara memanfaatkan dump-restore tentu saja tidak dapat dilakukan secara realtime akan tetapi masing-masing host memiliki sedikit ketergantungan.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="https://saiful.tech/postgresql-replication-slot/">
+                <h3 class="media-heading">[PostgreSQL] Replication Slot</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Jul 7, 2017
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">Sejak PostgreSQL 9.4, ada parameter baru di Postgres yaitu max_replication_slot. Apa sih ini?
+Replication slot adalah mekanisme dalam Postgres yang secara otomatis akan memastikan bahwa WAL files dari host master dijaga keberadaannya sampai semua standby server menerimanya. Dengan kata lain, slot replikasi akan memastikan bahwa WAL files yang ada di host master TIDAK dihapus sampai semua server standby sudah mengambilnya. Slot replikasi ini sebenarnya bisa digantikan dengan parameter wal_keep_segments dan archive_command, hanya saja cara kerja keduanya berbeda karena slot memastikan kebutuhan WAL files terpenuhi sedangkan wal_keep_segments menggunakan parameter jumlah file.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="https://saiful.tech/postgresql-amazon-rds-as-a-master-how-to-replicate-from-aws/">
+                <h3 class="media-heading">[PostgreSQL] Amazon RDS as A Master: How to Replicate from AWS</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  May 5, 2017
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">There are lots of ways to replicate PostgreSQL database including streaming replication, logical replication, trigger-based replication and so on. And sometimes you need all of them depending on you and your business needs. I can say that replication options in Postgres is somewhat limitless.
+And this time, I am writing how to replicate and use Amazon RDS as the master and use another as the slaves.
+Why would you do that?</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="https://saiful.tech/postgresql-bucardo-replication-update-is-slow/">
+                <h3 class="media-heading">[PostgreSQL] Bucardo Replication Update is Slow?</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  May 5, 2017
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">Bucardo is one of the replication system for PostgreSQL where it works asynchronous and using triggers to replicate the data. And one of the cool feature is you can have multi masters as well as slaves. Since the replication is working on table level to replicate the data, we can use it to replicate partial data and of course DLL is not supported. There are many more features you can look here.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="https://saiful.tech/nakatrip-mengarungi-sungai-cicatih-citatih/">
+                <h3 class="media-heading">[NakaTrip] Mengarungi Sungai Cicatih (Citatih)</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Apr 4, 2017
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">Terakhir kali berarung jeram adalah saat saya duduk di bangku kuliah. Saat itu saya aktif sebagai trainer outbond bersama beberapa kawan senior untuk bersenang-senang dan tentu saja dapat duit. Setelah beberapa tahun lamanya, akhirnya saya kembali mengarungi sungai bersama sebuah organizer bernama Riam Jeram.
+Namun, kali ini saya tidak akan menceritakan detail bagaimana perjalanan arung jeram yang kami lakukan pada 8 April kemarin, melainkan apa yang bisa disimpulkan supaya menjadi pelajaran bagi banyak orang, my takeaways.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="https://saiful.tech/kepemimpinan-dan-kita/">
+                <h3 class="media-heading">Kepemimpinan dan Kita</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Jul 7, 2007
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">Seperti biasa, saya selalu ingin tahu tentang apapun. Tentang semua ilmu yang seharusnya bisa saya simpan semuanya dalam otak saya yang memang sangat besar sekali. Dengan rasa ingin tahu, maka akhirnya saya menjatuhkan pilihan diantaranya pada keorganisasian yang ada di lembaga-lembaga yang saya tahu. Dari organisasi-organisasi yang saya ikuti saya berharap tahu banyak dan mampu mengetahui semua yang saya belum ketahui.
+Entah karena memang sudah takdir saya atau memang saya terlihat tidak pantas menjadi pemimpin dalam organisasi, dalam setiap organisasi yang saya ikuti saya selalu hanya bisa menjadi anggota dan tidak pernah benar-benar menjadi seorang pemimpin, kecuali pemimpin atas diri saya sendiri.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="https://saiful.tech/the-beautiful-day/">
+                <h3 class="media-heading">A Beautiful Day</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Jul 7, 2007
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">Terima kasih Tuhan.
+Itulah kata-kata yang seharusnya keluar dari mulut saya pertama kali ketika hal ini terjadi. Namun, saya melupakan kata-kata itu dan menggantinya dengan malam yang indah. I felt wrong for this.
+Malam ini, atas kuasa Tuhan melalui teman-teman seperjuangan saya -dianugerahi- diberikan sebuah wewenang, tanggung jawab dan amanat yang tidak pernah terpikirkan sebelumnya. Benar-benar sebuah kejutan yang amat tidak diduga.
+Iya, saya terpilih sebagai Ketua Umum Himpunan Mahasiswa Teknik Informatika kampus tercinta, Univ.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="https://saiful.tech/post/">
+                <h3 class="media-heading">Posts</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Aug 8, 2017
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather"></div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+      </div>
+    </div>
+    <div class="modal-footer">
+      <p class="results-count text-medium"
+         data-message-zero="no post found"
+         data-message-one="1 post found"
+         data-message-other="{n} posts found">
+         8 posts found
+      </p>
+    </div>
+  </div>
+</div>
+    
+  
+    
+    <div id="cover" style="background-image:url('https://lh3.googleusercontent.com/AL-dXRyck-EnFexSDhWFTRh4D6mDw0k4I07GIBO00hrOeFtJKkzh6TIemwG1qPk_rS-YwYXWXR62ZaiHRnk=w1920-h1080-rw-no');"></div>
+  
+
+
+    
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.js"></script>
+
+
+<script src="https://saiful.tech/js/script-wl33z0n6ocaypepiqrazthtivfrliqijej4rq8ek8gvrv1awftmgjuv8k4zc.min.js"></script>
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight').each(function(i, block) {
+    var code = "";
+    hljs.highlightAuto(block.innerText).value.split(/\r\n|\r|\n/).forEach(function(line) {
+      code += "<span class=\"line\">" + line + "</span><br>";
+    });
+    if (code.length > 0) {
+      block.innerHTML = code;  
+    }
+  });
+  $('pre > code').each(function(i, block) {
+    $(this).addClass('codeblock');
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+  
+    
+  
+
+
+
+
+
+    
+  </body>
+</html>
+

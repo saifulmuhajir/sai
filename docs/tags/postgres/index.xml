@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Postgres on SAIFUL MUHAJIR</title>
+    <link>https://saifulmuhajir.github.io/sai/tags/postgres/</link>
+    <description>Recent content in Postgres on SAIFUL MUHAJIR</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 15 Aug 2017 07:49:34 +0700</lastBuildDate>
+    
+	<atom:link href="https://saifulmuhajir.github.io/sai/tags/postgres/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>[PostgreSQL] Logical Replication di PostgreSQL 10</title>
+      <link>https://saifulmuhajir.github.io/sai/postgresql-logical-replication/</link>
+      <pubDate>Tue, 15 Aug 2017 07:49:34 +0700</pubDate>
+      
+      <guid>https://saifulmuhajir.github.io/sai/postgresql-logical-replication/</guid>
+      <description>Kondisi saat ini, sampai PostgreSQL 9.x, untuk replikasi database dengan batasan tertentu alias tidak replikasi data secara keseluruhan pada cluster database dapat dilakukan dengan dua cara yaitu dump-restore, dan replikasi dengan memanfaatkan trigger. Jika menggunakan trigger, maka pilihan alatnya adalah Londiste dari Skytools atau Bucardo yang masing-masing memiliki nilai plus dan minus. Dengan memanfaatkan trigger ini replikasi cukup bisa diandalkan karena nyaris realtime. Sementara memanfaatkan dump-restore tentu saja tidak dapat dilakukan secara realtime akan tetapi masing-masing host memiliki sedikit ketergantungan.</description>
+    </item>
+    
+    <item>
+      <title>[PostgreSQL] Replication Slot</title>
+      <link>https://saifulmuhajir.github.io/sai/postgresql-replication-slot/</link>
+      <pubDate>Tue, 25 Jul 2017 03:47:34 +0000</pubDate>
+      
+      <guid>https://saifulmuhajir.github.io/sai/postgresql-replication-slot/</guid>
+      <description>Sejak PostgreSQL 9.4, ada parameter baru di Postgres yaitu max_replication_slot. Apa sih ini?
+Replication slot adalah mekanisme dalam Postgres yang secara otomatis akan memastikan bahwa WAL files dari host master dijaga keberadaannya sampai semua standby server menerimanya. Dengan kata lain, slot replikasi akan memastikan bahwa WAL files yang ada di host master TIDAK dihapus sampai semua server standby sudah mengambilnya. Slot replikasi ini sebenarnya bisa digantikan dengan parameter wal_keep_segments dan archive_command, hanya saja cara kerja keduanya berbeda karena slot memastikan kebutuhan WAL files terpenuhi sedangkan wal_keep_segments menggunakan parameter jumlah file.</description>
+    </item>
+    
+  </channel>
+</rss>

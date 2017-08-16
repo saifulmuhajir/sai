@@ -1,0 +1,659 @@
+
+
+  
+    
+  
+
+
+  
+
+
+
+
+
+  
+
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Hugo 0.25.1">
+    <meta name="theme" content="Tranquilpeak 0.3.1-BETA">
+    <title>[PostgreSQL] Logical Replication di PostgreSQL 10</title>
+    <meta name="author" content="saifulmuhajir">
+    <meta name="keywords" content=", postgres, postgresql, saiful, saifulmuhajir, technology, indonesia, database administrator">
+
+    <link rel="icon" href="https://saifulmuhajir.github.io/sai/favicon.ico">
+    
+
+    
+    <meta name="description" content="Kondisi saat ini, sampai PostgreSQL 9.x, untuk replikasi database dengan batasan tertentu alias tidak replikasi data secara keseluruhan pada cluster database dapat dilakukan dengan dua cara yaitu dump-restore, dan replikasi dengan memanfaatkan trigger. Jika menggunakan trigger, maka pilihan alatnya adalah Londiste dari Skytools atau Bucardo yang masing-masing memiliki nilai plus dan minus. Dengan memanfaatkan trigger ini replikasi cukup bisa diandalkan karena nyaris realtime. Sementara memanfaatkan dump-restore tentu saja tidak dapat dilakukan secara realtime akan tetapi masing-masing host memiliki sedikit ketergantungan.">
+    <meta property="og:description" content="Kondisi saat ini, sampai PostgreSQL 9.x, untuk replikasi database dengan batasan tertentu alias tidak replikasi data secara keseluruhan pada cluster database dapat dilakukan dengan dua cara yaitu dump-restore, dan replikasi dengan memanfaatkan trigger. Jika menggunakan trigger, maka pilihan alatnya adalah Londiste dari Skytools atau Bucardo yang masing-masing memiliki nilai plus dan minus. Dengan memanfaatkan trigger ini replikasi cukup bisa diandalkan karena nyaris realtime. Sementara memanfaatkan dump-restore tentu saja tidak dapat dilakukan secara realtime akan tetapi masing-masing host memiliki sedikit ketergantungan.">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="[PostgreSQL] Logical Replication di PostgreSQL 10">
+    <meta property="og:url" content="/postgresql-logical-replication=/">
+    <meta property="og:site_name" content="SAIFUL MUHAJIR">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="SAIFUL MUHAJIR">
+    <meta name="twitter:description" content="Kondisi saat ini, sampai PostgreSQL 9.x, untuk replikasi database dengan batasan tertentu alias tidak replikasi data secara keseluruhan pada cluster database dapat dilakukan dengan dua cara yaitu dump-restore, dan replikasi dengan memanfaatkan trigger. Jika menggunakan trigger, maka pilihan alatnya adalah Londiste dari Skytools atau Bucardo yang masing-masing memiliki nilai plus dan minus. Dengan memanfaatkan trigger ini replikasi cukup bisa diandalkan karena nyaris realtime. Sementara memanfaatkan dump-restore tentu saja tidak dapat dilakukan secara realtime akan tetapi masing-masing host memiliki sedikit ketergantungan.">
+    
+      <meta name="twitter:creator" content="@saifulmuhajir">
+    
+    
+
+    
+    
+
+    
+      <meta property="og:image" content="https://saifulmuhajir.github.io/sai/images/profile.jpg">
+    
+
+    
+    
+    
+
+    
+
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.css" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" />
+    
+    
+    <link rel="stylesheet" href="https://saifulmuhajir.github.io/sai/css/style-u6mk0ojoywresbx8iepslrmmhl4stuhrsxuwhkpwrkrx7mryjcaimasnk4pi.min.css" />
+    
+    
+
+    
+      
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="4">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="https://saifulmuhajir.github.io/sai/">SAIFUL MUHAJIR</a>
+  </div>
+  
+    
+      <a class="header-right-icon st-search-show-outputs"
+         href="https://saifulmuhajir.github.io/sai/#search">
+    
+    
+      <i class="fa fa-lg fa-search"></i>
+    
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="4">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="https://saifulmuhajir.github.io/sai/#about">
+          <img class="sidebar-profile-picture" src="https://saifulmuhajir.github.io/sai/images/profile.jpg" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">saifulmuhajir</h4>
+        
+          <h5 class="sidebar-profile-bio">PostgreSQL Database Administrator</h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://saifulmuhajir.github.io/sai/categories">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://saifulmuhajir.github.io/sai/tags">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://saifulmuhajir.github.io/sai/archives">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-archive"></i>
+      
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://saifulmuhajir.github.io/sai/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-home"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://github.com/saifulmuhajir" target="_blank">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-github"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://saifulmuhajir.github.io/sai/index.xml">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-rss"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+    </ul>
+  </div>
+</nav>
+
+      
+
+      <div id="main" data-behavior="4"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+            <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title" itemprop="headline">
+      [PostgreSQL] Logical Replication di PostgreSQL 10
+    </h1>
+  
+  <div class="postShorten-meta post-meta">
+  
+    <time itemprop="datePublished" datetime="2017-08-15T07:49:34&#43;07:00">
+      
+  August 15, 2017
+
+    </time>
+  
+  
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://saifulmuhajir.github.io/sai/categories/postgresql">PostgreSQL</a>
+    
+  
+
+
+</div>
+
+</div>
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              <p>Kondisi saat ini, sampai PostgreSQL 9.x, untuk replikasi database dengan batasan tertentu alias tidak replikasi data secara keseluruhan pada cluster database dapat dilakukan dengan dua cara yaitu <em>dump-restore,</em> dan replikasi dengan memanfaatkan <em>trigger.</em> Jika menggunakan trigger, maka pilihan alatnya adalah <strong><a href="https://wiki.postgresql.org/wiki/Londiste_Tutorial_(Skytools_2)">Londiste</a></strong> dari Skytools atau <strong><a href="https://bucardo.org/wiki/Bucardo">Bucardo</a></strong> yang masing-masing memiliki nilai plus dan minus. Dengan memanfaatkan trigger ini replikasi cukup bisa diandalkan karena nyaris realtime. Sementara memanfaatkan dump-restore tentu saja tidak dapat dilakukan secara realtime akan tetapi masing-masing host memiliki sedikit ketergantungan. Intinya adalah, apa yang sesuai untuk kebutuhan saja.</p>
+
+<p>Namun, berkat kerja keras developer Postgres, urusan replikasi dengan batasan tidak lagi menyusahkan berkat kehadiran <strong><a href="https://www.postgresql.org/docs/10/static/logical-replication.html">LOGICAL REPLICATION</a>.</strong></p>
+
+<p>Dengan <strong><em>logical replication,</em></strong> replikasi tidak lagi harus dilakukan secara menyeluruh pada cluster, melainkan dapat dibatasi pada tabel-tabel tertentu saja. Dan ini berjalan secara <em>realtime</em> layaknya streaming replication. Dengan demikian satu <em>provider (master)</em> dapat mengirimkan replikasi tabel-tabel pada banyak <em>subscriber (slave)</em> atau sebaliknya. Selain itu dengan logical replication kita bisa melakukan replikasi pada level row atau kolom tertentu.</p>
+
+<p>Logical replication memanfaatkan metode publish dan subscribe dengan cara kerja yaitu subscriber akan menarik data dari provider(-provider) yang di daftarnya. Dan jika diperlukan subscriber akan mem-publish data yang diterimanya untuk dapat diambil oleh subscriber lain di bawahnya (cascaded).</p>
+
+<p>Dari penjelasan di atas, dapat ditarik kesimpulan bahwa <em>logical replication</em> bisa berguna pada banyak kasus contohnya:</p>
+
+<ul>
+<li>upgrade versi Postgres tanpa downtime</li>
+<li>database analitik kumpulan berbagai cluster</li>
+<li>pemisahan database dari cluster tertentu</li>
+<li>dan lain sebagainya</li>
+</ul>
+
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="https://saifulmuhajir.github.io/sai//tags/postgres/">postgres</a>
+
+  <a class="tag tag--primary tag--small" href="https://saifulmuhajir.github.io/sai//tags/postgresql/">PostgreSQL</a>
+
+  <a class="tag tag--primary tag--small" href="https://saifulmuhajir.github.io/sai//tags/replication/">replication</a>
+
+                  </div>
+                
+              
+            
+            <div class="post-actions-wrap">
+  <nav>
+    <ul class="post-actions post-action-nav">
+      
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--disabled">
+          
+            <i class="fa fa-angle-left"></i>
+            <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+          </a>
+        </li>
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="https://saifulmuhajir.github.io/sai/postgresql-replication-slot/" data-tooltip="[PostgreSQL] Replication Slot">
+          
+            <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+            <i class="fa fa-angle-right"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </nav>
+  <ul class="post-actions post-action-share">
+    
+      <li class="post-action hide-lg hide-md hide-sm">
+        <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+          <i class="fa fa-share-alt"></i>
+        </a>
+      </li>
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https%3a%2f%2fsaifulmuhajir.github.io%2fsai%2fpostgresql-logical-replication%2f">
+          <i class="fa fa-google-plus"></i>
+        </a>
+      </li>
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fsaifulmuhajir.github.io%2fsai%2fpostgresql-logical-replication%2f">
+          <i class="fa fa-facebook-official"></i>
+        </a>
+      </li>
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fsaifulmuhajir.github.io%2fsai%2fpostgresql-logical-replication%2f">
+          <i class="fa fa-twitter"></i>
+        </a>
+      </li>
+    
+    
+    <li class="post-action">
+      
+        <a class="post-action-btn btn btn--default" href="#">
+      
+        <i class="fa fa-list"></i>
+      </a>
+    </li>
+  </ul>
+</div>
+
+
+            
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2017 saifulmuhajir. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+        <div class="post-actions-wrap">
+  <nav>
+    <ul class="post-actions post-action-nav">
+      
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--disabled">
+          
+            <i class="fa fa-angle-left"></i>
+            <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+          </a>
+        </li>
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="https://saifulmuhajir.github.io/sai/postgresql-replication-slot/" data-tooltip="[PostgreSQL] Replication Slot">
+          
+            <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+            <i class="fa fa-angle-right"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </nav>
+  <ul class="post-actions post-action-share">
+    
+      <li class="post-action hide-lg hide-md hide-sm">
+        <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+          <i class="fa fa-share-alt"></i>
+        </a>
+      </li>
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https%3a%2f%2fsaifulmuhajir.github.io%2fsai%2fpostgresql-logical-replication%2f">
+          <i class="fa fa-google-plus"></i>
+        </a>
+      </li>
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fsaifulmuhajir.github.io%2fsai%2fpostgresql-logical-replication%2f">
+          <i class="fa fa-facebook-official"></i>
+        </a>
+      </li>
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fsaifulmuhajir.github.io%2fsai%2fpostgresql-logical-replication%2f">
+          <i class="fa fa-twitter"></i>
+        </a>
+      </li>
+    
+    
+    <li class="post-action">
+      
+        <a class="post-action-btn btn btn--default" href="#">
+      
+        <i class="fa fa-list"></i>
+      </a>
+    </li>
+  </ul>
+</div>
+
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+  <ul class="share-options">
+    <li class="share-option">
+      <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https%3a%2f%2fsaifulmuhajir.github.io%2fsai%2fpostgresql-logical-replication%2f">
+        <i class="fa fa-google-plus"></i><span>Share on Google Plus</span>
+      </a>
+    </li>
+    <li class="share-option">
+      <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fsaifulmuhajir.github.io%2fsai%2fpostgresql-logical-replication%2f">
+        <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
+      </a>
+    </li>
+    <li class="share-option">
+      <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fsaifulmuhajir.github.io%2fsai%2fpostgresql-logical-replication%2f">
+        <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+      </a>
+    </li>
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://saifulmuhajir.github.io/sai/images/profile.jpg" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">saifulmuhajir</h4>
+    
+      <div id="about-card-bio">PostgreSQL Database Administrator</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        @tokopedia
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        Jakarta, ID
+      </div>
+    
+  </div>
+</div>
+
+    <div id="algolia-search-modal" class="modal-container">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="close-button"><i class="fa fa-close"></i></span>
+      <a href="https://algolia.com" target="_blank" class="searchby-algolia text-color-light link-unstyled">
+        <span class="searchby-algolia-text text-color-light text-small">by</span>
+        <img class="searchby-algolia-logo" src="https://www.algolia.com/static_assets/images/press/downloads/algolia-light.svg">
+      </a>
+      <i class="search-icon fa fa-search"></i>
+      <form id="algolia-search-form">
+        <input type="text" id="algolia-search-input" name="search"
+          class="form-control input--large search-input" placeholder="Search" />
+      </form>
+    </div>
+    <div class="modal-body">
+      <div class="no-result text-color-light text-center">no post found</div>
+      <div class="results">
+        
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="https://saifulmuhajir.github.io/sai/postgresql-logical-replication/">
+                <h3 class="media-heading">[PostgreSQL] Logical Replication di PostgreSQL 10</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Aug 8, 2017
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">Kondisi saat ini, sampai PostgreSQL 9.x, untuk replikasi database dengan batasan tertentu alias tidak replikasi data secara keseluruhan pada cluster database dapat dilakukan dengan dua cara yaitu dump-restore, dan replikasi dengan memanfaatkan trigger. Jika menggunakan trigger, maka pilihan alatnya adalah Londiste dari Skytools atau Bucardo yang masing-masing memiliki nilai plus dan minus. Dengan memanfaatkan trigger ini replikasi cukup bisa diandalkan karena nyaris realtime. Sementara memanfaatkan dump-restore tentu saja tidak dapat dilakukan secara realtime akan tetapi masing-masing host memiliki sedikit ketergantungan.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="https://saifulmuhajir.github.io/sai/postgresql-replication-slot/">
+                <h3 class="media-heading">[PostgreSQL] Replication Slot</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Jul 7, 2017
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">Sejak PostgreSQL 9.4, ada parameter baru di Postgres yaitu max_replication_slot. Apa sih ini?
+Replication slot adalah mekanisme dalam Postgres yang secara otomatis akan memastikan bahwa WAL files dari host master dijaga keberadaannya sampai semua standby server menerimanya. Dengan kata lain, slot replikasi akan memastikan bahwa WAL files yang ada di host master TIDAK dihapus sampai semua server standby sudah mengambilnya. Slot replikasi ini sebenarnya bisa digantikan dengan parameter wal_keep_segments dan archive_command, hanya saja cara kerja keduanya berbeda karena slot memastikan kebutuhan WAL files terpenuhi sedangkan wal_keep_segments menggunakan parameter jumlah file.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="https://saifulmuhajir.github.io/sai/postgresql-amazon-rds-as-a-master-how-to-replicate-from-aws/">
+                <h3 class="media-heading">[PostgreSQL] Amazon RDS as A Master: How to Replicate from AWS</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  May 5, 2017
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">There are lots of ways to replicate PostgreSQL database including streaming replication, logical replication, trigger-based replication and so on. And sometimes you need all of them depending on you and your business needs. I can say that replication options in Postgres is somewhat limitless.
+And this time, I am writing how to replicate and use Amazon RDS as the master and use another as the slaves.
+Why would you do that?</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="https://saifulmuhajir.github.io/sai/postgresql-bucardo-replication-update-is-slow/">
+                <h3 class="media-heading">[PostgreSQL] Bucardo Replication Update is Slow?</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  May 5, 2017
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">Bucardo is one of the replication system for PostgreSQL where it works asynchronous and using triggers to replicate the data. And one of the cool feature is you can have multi masters as well as slaves. Since the replication is working on table level to replicate the data, we can use it to replicate partial data and of course DLL is not supported. There are many more features you can look here.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="https://saifulmuhajir.github.io/sai/nakatrip-mengarungi-sungai-cicatih-citatih/">
+                <h3 class="media-heading">[NakaTrip] Mengarungi Sungai Cicatih (Citatih)</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Apr 4, 2017
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">Terakhir kali berarung jeram adalah saat saya duduk di bangku kuliah. Saat itu saya aktif sebagai trainer outbond bersama beberapa kawan senior untuk bersenang-senang dan tentu saja dapat duit. Setelah beberapa tahun lamanya, akhirnya saya kembali mengarungi sungai bersama sebuah organizer bernama Riam Jeram.
+Namun, kali ini saya tidak akan menceritakan detail bagaimana perjalanan arung jeram yang kami lakukan pada 8 April kemarin, melainkan apa yang bisa disimpulkan supaya menjadi pelajaran bagi banyak orang, my takeaways.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="https://saifulmuhajir.github.io/sai/kepemimpinan-dan-kita/">
+                <h3 class="media-heading">Kepemimpinan dan Kita</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Jul 7, 2007
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">Seperti biasa, saya selalu ingin tahu tentang apapun. Tentang semua ilmu yang seharusnya bisa saya simpan semuanya dalam otak saya yang memang sangat besar sekali. Dengan rasa ingin tahu, maka akhirnya saya menjatuhkan pilihan diantaranya pada keorganisasian yang ada di lembaga-lembaga yang saya tahu. Dari organisasi-organisasi yang saya ikuti saya berharap tahu banyak dan mampu mengetahui semua yang saya belum ketahui.
+Entah karena memang sudah takdir saya atau memang saya terlihat tidak pantas menjadi pemimpin dalam organisasi, dalam setiap organisasi yang saya ikuti saya selalu hanya bisa menjadi anggota dan tidak pernah benar-benar menjadi seorang pemimpin, kecuali pemimpin atas diri saya sendiri.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="https://saifulmuhajir.github.io/sai/the-beautiful-day/">
+                <h3 class="media-heading">A Beautiful Day</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Jul 7, 2007
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">Terima kasih Tuhan.
+Itulah kata-kata yang seharusnya keluar dari mulut saya pertama kali ketika hal ini terjadi. Namun, saya melupakan kata-kata itu dan menggantinya dengan malam yang indah. I felt wrong for this.
+Malam ini, atas kuasa Tuhan melalui teman-teman seperjuangan saya -dianugerahi- diberikan sebuah wewenang, tanggung jawab dan amanat yang tidak pernah terpikirkan sebelumnya. Benar-benar sebuah kejutan yang amat tidak diduga.
+Iya, saya terpilih sebagai Ketua Umum Himpunan Mahasiswa Teknik Informatika kampus tercinta, Univ.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="https://saifulmuhajir.github.io/sai/post/">
+                <h3 class="media-heading">Posts</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Aug 8, 2017
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather"></div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+      </div>
+    </div>
+    <div class="modal-footer">
+      <p class="results-count text-medium"
+         data-message-zero="no post found"
+         data-message-one="1 post found"
+         data-message-other="{n} posts found">
+         8 posts found
+      </p>
+    </div>
+  </div>
+</div>
+    
+  
+    
+    <div id="cover" style="background-image:url('https://saifulmuhajir.github.io/sai/images/spring-nocal.png');"></div>
+  
+
+
+    
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.js"></script>
+
+
+<script src="https://saifulmuhajir.github.io/sai/js/script-wl33z0n6ocaypepiqrazthtivfrliqijej4rq8ek8gvrv1awftmgjuv8k4zc.min.js"></script>
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight').each(function(i, block) {
+    var code = "";
+    hljs.highlightAuto(block.innerText).value.split(/\r\n|\r|\n/).forEach(function(line) {
+      code += "<span class=\"line\">" + line + "</span><br>";
+    });
+    if (code.length > 0) {
+      block.innerHTML = code;  
+    }
+  });
+  $('pre > code').each(function(i, block) {
+    $(this).addClass('codeblock');
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+  
+    
+  
+
+
+
+
+
+    
+  </body>
+</html>
+

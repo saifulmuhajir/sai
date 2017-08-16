@@ -1,11 +1,11 @@
-baseurl = "https://saifulmuhajir.github.io/sai/"
+baseurl = "https://saiful.tech/"
 languageCode = "en-us"
 defaultContentLanguage = "en-us"
 title = "SAIFUL MUHAJIR"
-theme = "tranq"
+theme = "tranquil"
 paginate = 7
 canonifyurls = true
-publishDir = "docs"
+publishDir = "public"
 
 [taxonomies]
   tag = "tags"

@@ -11,16 +11,16 @@ tags:
   - cicatih
   - nakatrip
 gallery:
-  - https://lh3.googleusercontent.com/mY7zHPRaHSUKXuMFnAUDEUf-u9wol1GmfzsAMpTG9tmu3541FYy0ZUNWudcJ-4EnizcXoTInKBSnxOaa3dY=w1920-h1080-rw-no
-  - https://lh3.googleusercontent.com/kI-vHPLGGvdUSgb7ok3UEEYfeA-42NyreADPQwzqiBMlFrASHceWgOgxNwJRx06Dz5wZT4YvkOjzHgqO2pE=w1920-h1080-rw-no
-  - https://lh3.googleusercontent.com/787rbjf7DJ0iFUr6i4NWwtxhyBYo7vjJZZF5eWJ94hFau8hu-SzsLZlgEhKDkrNCDGOnqRv1sjfq9LloQUg=w1920-h1080-rw-no
-  - https://lh3.googleusercontent.com/FdVCWCbf3c8z6o4-GH5A88RjBkyV_19t1mxLldst19EXPcU4kBlx5Czg_7KtJqiK24wdQhPkkYBORrFyKlw=w1920-h1080-rw-no
-  - https://lh3.googleusercontent.com/6hOY3oqKSrNtD2zpHT_GI9ArQXSz8K8Yv6p7ig17NRjLpoRSBtp7NF0VJ-JTEqdYKHODny-C9wf2wxqnpKc=w1920-h1080-rw-no
+  - "/images/2017/04/IMG_5156-ANIMATION.gif"
+  - "/images/2017/04/IMG_5175-ANIMATION.gif"
+  - "/images/2017/04/IMG_5228-ANIMATION.gif"
+  - "/images/2017/04/IMG_5259-ANIMATION.gif"
+  - "/images/2017/04/IMG_5402-ANIMATION.gif"
 
 ---
 Terakhir kali berarung jeram adalah saat saya duduk di bangku kuliah. Saat itu saya aktif sebagai trainer outbond bersama beberapa kawan senior untuk bersenang-senang dan tentu saja dapat duit. Setelah beberapa tahun lamanya, akhirnya saya kembali mengarungi sungai bersama sebuah organizer bernama Riam Jeram.
 
-<img src="https://lh3.googleusercontent.com/PRQpxLL-V_ShFQMqttkEWF3Zjxsbrq7GqxH9lCtzu1PsDo3hg46X0zko8LseYqGyfsfwSxSHrSwM7e1CsVA=w1920-h1080-rw-no" alt="NakaTrip 2017 - arung jeram di Sungai Cicatih" />
+<img src="/images/2017/04/IMG_5082-ANIMATION.gif" alt="NakaTrip 2017 - arung jeram di Sungai Cicatih" />
 
 Namun, kali ini saya tidak akan menceritakan detail bagaimana perjalanan arung jeram yang kami lakukan pada 8 April kemarin, melainkan apa yang bisa disimpulkan supaya menjadi pelajaran bagi banyak orang, _my takeaways_. Maka, tanpa basa-basi...
 
@@ -64,9 +64,11 @@ Sungai Cicatih sendiri cukup lebar dan dengan kedalaman bervariasi. Untuk perjal
   * Jatuh, dari perahu karena beberapa hal, di antaranya (1) ditabrak perahu lain; (2) terbalik oleh arus; (3) disengaja, dll.
   * Kelapa muda dan ubi rebus, bukan di tengah sungai melainkan di pinggir sungai.
 
-<img src="https://lh3.googleusercontent.com/mZ4bcJD89WoMvD2EHsYWwyw_ojxHanz9ZtJqVc6J-J5IkM_NLWVsWeYaPNtiU0DZC-o-7UYEjaco-X-xGw4=w1920-h1080-rw-no" alt="NakaTrip 2017 - arung jeram di Sungai Cicatih" />
+<img src="/images/2017/04/IMG_5340-ANIMATION.gif" alt="NakaTrip 2017 - arung jeram di Sungai Cicatih" />
 
 Setelah 3 jam di sungai kami pun naik ke atas dan beres-beres, termasuk mandi dan makan untuk selanjutnya kembali ke Jakarta. Seberapa macet? Lebih macet.
+
+{{< youtube id="SfHUm3PtiBM" >}}
 
 Video lainnya ada di <a href="https://youtu.be/HT8eDVmhKew" target="_blank" rel="noopener noreferrer">sini</a>, <a href="https://youtu.be/6t_JWErRfAI" target="_blank" rel="noopener noreferrer">sini</a> yang dibuat oleh {{< hl-text red >}}Ihsan Nugraha{{</ hl-text >}} dan album lengkapnya di <a href="https://goo.gl/photos/eh1ggdJpF49S8rQ18" target="_blank" rel="noopener noreferrer">sini</a> karya banyak orang seperti {{< hl-text red >}}Hang Nadi, Felix Juwono, dan Eka Risky (tukang upload).{{</ hl-text >}}
 

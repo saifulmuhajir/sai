@@ -1,33 +1,156 @@
-baseURL = "https://saifulmuhajir.gitlab.io/"
+baseurl = "https://saiful.tech/"
 languageCode = "en-us"
-title = "SAIFULMUHAJIR"
-theme = "casp"
-paginate = 5
-Copyright = "All rights reserved - 2017"
+defaultContentLanguage = "en-us"
+title = "SAIFUL MUHAJIR"
+theme = "tranq"
+paginate = 7
 canonifyurls = true
+publishDir = "docs"
+
+[taxonomies]
+  tag = "tags"
+  category = "categories"
+  archive = "archives"
+
+[author]
+  name = "saifulmuhajir"
+  bio = "PostgreSQL Database Administrator"
+  job = "@tokopedia"
+  location = "Jakarta, ID"
+  picture = "https://lh3.googleusercontent.com/ncECN4NltOXw4tTzJDcFOkhStdNUywEINkOreBlX4Mb05IOZlzzTFlywf_5VxB56esRpNrUm-lr5ObTr38Zgf0h_gUwwtEEnAwRk7G29hoACrHxYYFsViVIDySY9uJ3jOnicHkq3C7FbbMs4FhVgWyzoG5JbKYvJ05FSpHSS3Et6TYKHftLKCjICMqCdfu_Ap2dbDRe35TbAhYWzl48hxxDe9gOiS8t00kjzpRObAG7j9Aoss63NXDW_QhJZ52-sisKmP270ZpilsiLDo2_IR7ZYPPawHapey-OpWP7j01WzGH2DN4Hhh1z50rgOsjT0xDt-MgD2eyDwOrSI6BsQFm1whhGlI_OgyDh8ifT75FqfDhpubdUKtC1s_QRyxmkt307flHJ8XsvHjzjpmfwUY4sgMZ3RGGvjHz6vth3hSlwzqJ939MIrA1aCJfT5u4Z8qYsdrsUt76-UrDoNlQMMvAGGUHl7JkjH37rouiiCWO4gK8UZ3Ge62XghRbryBAt6Sex2Ah-ZcUeGspIoqwDwuQnYbuC_4_K2hKRTyQ0spzNsh_S6R8C8Zab6igLO3gFsNlAQ5pxWxlF-JYpYIOxYkB7mzhkTj4AR6G4qIHldVRd9veMHhRvs=s319-no"
+  twitter = "saifulmuhajir"
+
+# Menu Configuration
+[[menu.main]]
+  weight = 0
+  identifier = "home"
+  name = "Home"
+  pre = "<i class=\"sidebar-button-icon fa fa-lg fa-home\"></i>"
+  url = "/"
+[[menu.main]]
+  weight = 1
+  identifier = "categories"
+  name = "Categories"
+  pre = "<i class=\"sidebar-button-icon fa fa-lg fa-bookmark\"></i>"
+  url = "/categories"
+[[menu.main]]
+  weight = 2
+  identifier = "tags"
+  name = "Tags"
+  pre = "<i class=\"sidebar-button-icon fa fa-lg fa-tags\"></i>"
+  url = "/tags"
+[[menu.main]]
+  weight = 3
+  identifier = "archives"
+  name = "Archives"
+  pre = "<i class=\"sidebar-button-icon fa fa-lg fa-archive\"></i>"
+  url = "/archives"
+#[[menu.main]]
+#  weight = 4
+#  identifier = "about"
+#  name = "About"
+#  pre = "<i class=\"sidebar-button-icon fa fa-lg fa-question\"></i>"
+#  url = "/#about"
+
+[[menu.links]]
+  weight = 0
+  identifier = "github"
+  name = "GitHub"
+  pre = "<i class=\"sidebar-button-icon fa fa-lg fa-github\"></i>"
+  url = "https://github.com/saifulmuhajir"
+
+[[menu.misc]]
+  weight = 0
+  identifier = "rss"
+  name = "RSS"
+  pre = "<i class=\"sidebar-button-icon fa fa-lg fa-rss\"></i>"
+  url = "/index.xml"
 
 [params]
-  description = "another viewpoint"
-  # metadescription = "Used as 'description' meta tag for both home and index pages. If not set, 'description' will be used instead"
-  cover = "images/cover.png"
-  author = "saiful MUHAJIR"
-  authorlocation = "Jakarta, ID"
-  authorwebsite = "http://saifulmuhajir.web.id"
-  authorbio= "PostgreSQL Database Administrator @tokopedia"
-  logo = "images/profile.png"
-  # googleAnalyticsUserID = "UA-79101-12"
-  # Optional RSS-Link, if not provided it defaults to the standard index.xml
-  # RSSLink = "http://feeds.feedburner.com/..."
-  # githubName = "saifulmuhajir"
-  # twitterName = "saifulmuhajir"
-  # linkedinName = ""
-  # set true if you are not proud of using Hugo (true will hide the footer note "Proudly published with HUGO.....")
-  hideHUGOSupport = true
-  
-  # Setting a value will load highlight.js and enable syntax highlighting using the style selected.
-  # See https://github.com/isagalaev/highlight.js/tree/master/src/styles for available styles
-  # A preview of above styles can be viewed at https://highlightjs.org/static/demo/
-  hjsStyle = "default"
+  # Customize date format use to render blog post date, categories and other
+  # You must use date format used by Go Time package https://golang.org/pkg/time/
+  # Months (not work with short month like "jan", "feb", etc) are translated if translation exists on i18n folders
+  # Default format is: January 2, 2006 
+  # dateFormat = "2 January 2006"
 
-  [params.social]
-    twitter = "saifulmuhajir"
+  # Global keywords configuration. Following keywords will be add to every pages
+  keywords = ["postgres", "postgresql", "saiful", "saifulmuhajir", "technology", "indonesia", "database administrator"]
+
+  # Hide sidebar on all article page to let article take full width to improve reading, and enjoy wide images and cover images. (true: enable, false: disable)
+  clearReading = true
+
+  # Define categories will create hierarchy between parents: `categories = ["foo", "bar"]` will consider "bar" a sub-category of "foo". 
+  # If false it will flat categories.
+  hierarchicalCategories = true
+
+  description = "another viewpoint"
+
+  # Customization
+  # Define the behavior of the sidebar
+  # 1: Display extra large sidebar on extra large screen, large sidebar on large screen,
+  #    medium sidebar on medium screen and header bar on small screen and
+  # extra large sidebar is swiped on extra large screen and large sidebar on all lower screen (default)
+  # 2: Display large sidebar on large screen, medium sidebar on medium screen and
+  #    header bar on small screen and large sidebar is swiped
+  # 3: Display medium sidebar on large and medium screen and header bar on small screen and
+  #    medium sidebar is swiped
+  # 4: Display header bar on all screens, extra large sidebar is swiped on extra large screen and
+  #    large sidebar is swiped on all lower screens
+  # 5: Display header bar on all screens and large sidebar is swiped on large screen
+  # 6: Display header bar on all screens and medium sidebar is swiped
+  sidebarBehavior = 1
+
+  # Your blog cover picture. I STRONGLY recommend you to use a CDN to speed up loading of pages.
+  # There is many free CDN like Cloudinary or you can also use indirectly
+  # by using services like Google Photos.
+  # Current image is on AWS S3 and delivered by AWS CloudFront.
+  # Otherwise put your image in folder `static/_images/` (development)  or in `source/assets/images/` if you can't or don't want to build the theme,
+  # and use relative url : `your-image.png`
+  coverImage = "https://lh3.googleusercontent.com/AL-dXRyck-EnFexSDhWFTRh4D6mDw0k4I07GIBO00hrOeFtJKkzh6TIemwG1qPk_rS-YwYXWXR62ZaiHRnk=w1920-h1080-rw-no"
+
+  # Display an image gallery at the end of a post which have photos variables (false: disabled, true: enabled)
+  imageGallery = true
+
+  # Display thumbnail image of each post on index pages (false: disabled, true: enabled)
+  thumbnailImage = true
+  # Display thumbnail image at the right of title in index pages (`right`, `left` or `bottom`)
+  # Set this value to `right` if you have old posts to keep the old style on them
+  # and define `thumbnailImagePosition` on a post to overwrite this setting
+  thumbnailImagePosition = "bottom"
+  # Automatically select the cover image or the first photo from the gallery of a post if there is no thumbnail image as the thumbnail image
+  # Set this value to `true` if you have old posts that use the cover image or the first photo as the thumbnail image
+  # and set `autoThumbnailImage` to `false` on a post to overwrite this setting
+  autoThumbnailImage = true
+
+  # Your favicon path, default is "/favicon.png"
+  favicon = "/images/favicon.ico"
+
+  # Header configuration
+  # The link at the right of the header is customizable
+  # You can add a link (as an icon) at the right of the header instead of the author's gravatar image or author's picture.
+  # By default, author's gravatar or author's picture is displayed.
+  #     url: /#search
+  #     icon: search
+  #     class: st-search-show-outputs
+
+  # Custom CSS. Put here your custom CSS files. They are loaded after the theme CSS;
+  # they have to be referred from static root. Example
+  # customCSS = ["css/foo.css"]
+
+  # Custom JS. Put here your custom JS files. They are loaded after the theme JS;
+  # they have to be referred from static root. Example
+  # customJS = ["js/foo.js"]
+
+  [params.header.rightLink]
+    #class = "open-algolia-search"
+    class = "st-search-show-outputs"
+    icon = "search"
+    url = "/#search"
+
+  # Customize link of author avatar in sidebar
+  # [params.sidebar.profile]
+  #   url = "/#about"
+
+  # Customize copyright value "© 2016 <CUSTOMIZATION>. All Rights Reserved"
+  # [params.footer]
+  #   copyright = "<a href=\"https://github.com/kakawait\">kakawait</a>"

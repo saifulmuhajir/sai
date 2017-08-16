@@ -102,4 +102,7 @@ And the last step is of course changing the AUTOVACUUM threshold and ratio for t
 
 And now, I can go to sleep.
 
+{{< alert warning >}}
 **UPDATE:** The drawback of my faster-than-ever-replication is CPU usage on the master steadily on 50%. Oh, well.
+{{< /alert >}}
+

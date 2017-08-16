@@ -17,7 +17,7 @@ There are lots of ways to **replicate PostgreSQL database** including _streaming
 
 And this time, I am writing how to replicate and use **Amazon RDS as the master** and use another as the slaves.
 
-Why would you do that? Why would anyone bring down their cloud servers? This time, my reason is our data analysts needs to _as the name suggests_ analyze transactions data in their own machine, which is located in our own data center while the database needed is on the cloud. We don't allow them to access production servers because, you know, production is scary stuff. That's what we told them. :grimacing:
+Why would you do that? Why would anyone bring down their cloud servers? This time, my reason is our data analysts needs to _as the name suggests_ analyze transactions data in their own machine, which is located in our own data center while the database needed is on the cloud. We don't allow them to access production servers because, you know, production is scary stuff. That's what we told them. _:grimacing:_
 
 Here's the preparation stuff:
 

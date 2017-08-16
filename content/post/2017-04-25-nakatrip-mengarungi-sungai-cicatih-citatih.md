@@ -10,6 +10,7 @@ tags:
   - arung
   - cicatih
   - nakatrip
+thumbnail: "/images/2017/04/IMG_5082-ANIMATION.gif"
 gallery:
   - "/images/2017/04/IMG_5156-ANIMATION.gif"
   - "/images/2017/04/IMG_5175-ANIMATION.gif"
